@@ -128,7 +128,8 @@ class Shoot:
                     file_write = open(wpath, 'a+')
                     file_write_f =  open(wpath_f, 'a+')
                     count=0
-                    
+                    if(encrFlag):
+                        fernet = Fernet(encrKey)
                     for line in file:
                         if(count==0):
                             ln=line.strip().split(',')
@@ -154,13 +155,19 @@ class Shoot:
                             ln=line.strip().split(',')
                             print(count, end="::")
                             print(ln,end="")
-                            subject=self.readBuildFiles(self.builds_path+"\\subject\\"+ln[2]).format(name=ln[0])
+                            
+                            enc_name=ln[0]
+                            enc_email=ln[1]
+                            if(encrFlag):
+                                enc_name=fernet.decrypt(enc_name).decode()
+                                enc_email=fernet.decrypt(enc_email).decode()
+                            subject=self.readBuildFiles(self.builds_path+"\\subject\\"+ln[2]).format(name=enc_name)
                             #print("Subject :"+subject)
-                            body=self.readBuildFiles(self.builds_path+"\\body\\"+ln[3]).replace("{name}", ln[0])
+                            body=self.readBuildFiles(self.builds_path+"\\body\\"+ln[3]).replace("{name}", enc_name)
                             #print("Body :"+body)
                             
                             try:
-                                TurboSx(from_address,ln[1],subject,body,pwd,smtp_server,smtp_port)
+                                TurboSx(from_address,enc_email,subject,body,pwd,smtp_server,smtp_port)
                                 
                                 print("-> Success", end=" : ")
                                 print(smtp_server)
