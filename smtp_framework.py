@@ -190,7 +190,7 @@ class Shoot:
                     print("Invalid File Extension "+i)
                     os.remove(fpath)
                 
-                (self.outbound_path,ids+"_"+now.strftime("%H%M%S")+"_"+i)
+                ftpTransfer(self.outbound_path,ids+"_"+now.strftime("%H%M%S")+"_"+i)
         else:
             print("No Files To Process in inbound")
 
