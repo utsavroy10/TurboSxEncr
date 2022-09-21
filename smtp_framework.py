@@ -7,6 +7,7 @@ import ftplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
+from cryptography.fernet import Fernet
 
 class TurboSx:
     def __init__(self,from_address,to,subject,body,pwd,smtp_server,smtp_port,mail_type="mail",body_type="html"):
@@ -180,7 +181,8 @@ class Shoot:
                 else:
                     print("Invalid File Extension "+i)
                     os.remove(fpath)
-                ftpTransfer(self.outbound_path,ids+"_"+now.strftime("%H%M%S")+"_"+i)
+                
+                (self.outbound_path,ids+"_"+now.strftime("%H%M%S")+"_"+i)
         else:
             print("No Files To Process in inbound")
 
@@ -280,17 +282,63 @@ class ftpTransfer:
                 else:
                     print("Exception has Occurred!")
                 session.close()
+                
+class encrpt:
+    def __init__(self,encrypt_path=sys.argv[1]+"\encrypt"):
+        self.encrypt_path=encrypt_path
+        if not os.path.exists(self.encrypt_path):
+            os.makedirs(self.encrypt_path)
+        
+        ls=os.listdir(self.encrypt_path)
+        t_count=len(ls)
+        
+        fernet = Fernet(encrKey)
+        
+        
+        if(len(ls)>0):
+            print("Total Files:",len(ls))
+            f_count=1
+            for i in os.listdir(self.encrypt_path):
+                now = datetime.now()
+                fpath=self.encrypt_path+"\"+i
+                wpath=self.encrypt_path+"\\"+ids+"_"+now.strftime("%H%M%S")+"_"+i
+                
+                print("Preparing File "+str(f_count)+" of "+str(t_count))
+                f_count=f_count+1
+                if(i.endswith('.csv')):                    
 
-
+                    
+                    print("File name: "+fpath)
+                    #print(wpath)
+                    
+                    file= open(fpath,'r')
+                    file_write = open(wpath, 'a+')
+                    
+                    count=0
+                    
+                    for line in file:
+                        ln=line.strip().split(',')
+                        name=fernet.decrypt(ln[0]).decode()
+                        email=fernet.decrypt(ln[1]).decode()
+                        
+                        file_write.write(name+","+email+"\n")
+#                       
+                else:
+                    print("Not a csv File!")
+        else:
+            print("No files to encrypt!")
 
 try:
+encrKey=b'TuAIgdLeHYVJB9I41Y-qDvTzxGi_IydE3i0Pz5u9AZw='
 
     if (code == '001'):    
         while x:
             print("Select Option:")
             print("Press 1 to Split Files (Feeds -> inbound):")
             print("Press 2 to Shoot (inbound -> outbound):")
-            print("Press 3 to logout")
+            print("Press 3 to Shoot Encrypted (inbound -> outbound):")
+            print("Press 4 to Encrypt (encrypt):")
+            print("Press 5 to logout")
             val=input("Enter Option:")
 
             if (val == "1"):
@@ -298,9 +346,18 @@ try:
                 splitFeeds()
             elif (val == "2"):
                 print("Option 2")
+                encrFlag=False
                 Shoot()
-            elif(val == "3"):
+            elif (val == "3"):
                 print("Option 3")
+                encrFlag=True
+                Shoot()
+                encrFlag=False
+            elif (val == "4"):
+                print("Option 4")
+                encrpt()
+            elif(val == "5"):
+                print("Option 5")
                 code= requests.get("https://www.inboxifyme.com/smtp_verify.php?NAME={usr}&ID={ids}".format(usr=usr,ids=ids,pwd=pwd)).json()['code']
                 x=False
                 
