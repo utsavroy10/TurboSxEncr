@@ -321,10 +321,14 @@ class encrpt:
                     
                     for line in file:
                         ln=line.strip().split(',')
-                        name=fernet.encrypt(bytes(ln[0],'utf-8')).decode()
-                        email=fernet.encrypt(bytes(ln[1],'utf-8')).decode()
+                        try:
                         
-                        file_write.write(name+","+email+",subject.txt,body.txt"+"\n")
+                            name=fernet.encrypt(bytes(ln[0],'utf-8')).decode()
+                            email=fernet.encrypt(bytes(ln[1],'utf-8')).decode()
+                            
+                            file_write.write(name+","+email+",subject.txt,body.txt"+"\n")
+                        except Exception as e:
+                            print("Line Skipped!")
                     file_write.close()
                     file.close()
                     os.remove(fpath)
