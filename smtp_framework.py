@@ -314,12 +314,13 @@ class encrpt:
                     
                     for line in file:
                         ln=line.strip().split(',')
-                        name=fernet.encrypt(ln[0]).encode()
-                        email=fernet.encrypt(ln[1]).encode()
+                        name=fernet.encrypt(bytes(ln[0],'utf-8'))
+                        email=fernet.encrypt(bytes(ln[1],'utf-8'))
                         
                         file_write.write(name+","+email+"\n")
                     file_write.close()
                     file.close()
+                    os.remove(fpath)
                 else:
                     print("Not a csv File!")
         else:
