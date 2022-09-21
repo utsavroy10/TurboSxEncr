@@ -154,13 +154,14 @@ class Shoot:
                         else:
                             ln=line.strip().split(',')
                             print(count, end="::")
-                            print(ln,end="")
+                            
                             
                             enc_name=ln[0]
                             enc_email=ln[1]
                             if(encrFlag):
                                 enc_name=fernet.decrypt(enc_name).decode()
                                 enc_email=fernet.decrypt(enc_email).decode()
+                            print(enc_name,",",enc_email,end="")
                             subject=self.readBuildFiles(self.builds_path+"\\subject\\"+ln[2]).format(name=enc_name)
                             #print("Subject :"+subject)
                             body=self.readBuildFiles(self.builds_path+"\\body\\"+ln[3]).replace("{name}", enc_name)
