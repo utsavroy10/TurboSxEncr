@@ -317,10 +317,11 @@ class encrpt:
                         name=fernet.encrypt(bytes(ln[0],'utf-8')).decode()
                         email=fernet.encrypt(bytes(ln[1],'utf-8')).decode()
                         
-                        file_write.write(name+","+email+"\n")
+                        file_write.write(name+","+email+",subject.txt,body.txt"+"\n")
                     file_write.close()
                     file.close()
                     os.remove(fpath)
+                    print("encrypted Complete!!!")
                 else:
                     print("Not a csv File!")
         else:
