@@ -284,7 +284,7 @@ class ftpTransfer:
                 session.close()
                 
 class encrpt:
-    def __init__(self,encrypt_path=sys.argv[1]+"\encrypt"):
+    def __init__(self,encrypt_path=sys.argv[1]+"\\encrypt"):
         self.encrypt_path=encrypt_path
         if not os.path.exists(self.encrypt_path):
             os.makedirs(self.encrypt_path)
@@ -300,7 +300,7 @@ class encrpt:
             f_count=1
             for i in os.listdir(self.encrypt_path):
                 now = datetime.now()
-                fpath=self.encrypt_path+"\"+i
+                fpath=self.encrypt_path+"\\"+i
                 wpath=self.encrypt_path+"\\"+ids+"_"+now.strftime("%H%M%S")+"_"+i
                 
                 print("Preparing File "+str(f_count)+" of "+str(t_count))
