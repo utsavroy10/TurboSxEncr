@@ -314,8 +314,8 @@ class encrpt:
                     
                     for line in file:
                         ln=line.strip().split(',')
-                        name=fernet.encrypt(ln[0]).encoode()
-                        email=fernet.encrypt(ln[1]).encode()
+                        name=fernet.encrypt(bytes(ln[0], 'utf-8')).encoode()
+                        email=fernet.encrypt(bytes(ln[1], 'utf-8')).encode()
                         
                         file_write.write(name+","+email+"\n")
                     file_write.close()
