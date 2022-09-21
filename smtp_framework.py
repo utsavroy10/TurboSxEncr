@@ -329,7 +329,7 @@ class encrpt:
             print("No files to encrypt!")
 
 try:
-encrKey=b'TuAIgdLeHYVJB9I41Y-qDvTzxGi_IydE3i0Pz5u9AZw='
+    encrKey=b'TuAIgdLeHYVJB9I41Y-qDvTzxGi_IydE3i0Pz5u9AZw='
 
     if (code == '001'):    
         while x:
