@@ -236,11 +236,7 @@ class splitFeeds:
 
 
 
-x=True
-usr=input("Enter User Name:")
-ids=input("Enter ID:")
-pwd=input("Enter Password:")
-code= requests.get("https://www.inboxifyme.com/smtp_verify.php?NAME={usr}&PWD={pwd}&ID={ids}".format(usr=usr,ids=ids,pwd=pwd)).json()['code']
+
 
 
 class ftpTransfer:
@@ -322,14 +318,22 @@ class encrpt:
                         email=fernet.decrypt(ln[1]).decode()
                         
                         file_write.write(name+","+email+"\n")
-#                       
+                    file_write.close()
+                    file.close()
                 else:
                     print("Not a csv File!")
         else:
             print("No files to encrypt!")
+            
+x=True
+usr=input("Enter User Name:")
+ids=input("Enter ID:")
+pwd=input("Enter Password:")
+code= requests.get("https://www.inboxifyme.com/smtp_verify.php?NAME={usr}&PWD={pwd}&ID={ids}".format(usr=usr,ids=ids,pwd=pwd)).json()['code'] 
+encrKey=b'TuAIgdLeHYVJB9I41Y-qDvTzxGi_IydE3i0Pz5u9AZw='           
 
 try:
-    encrKey=b'TuAIgdLeHYVJB9I41Y-qDvTzxGi_IydE3i0Pz5u9AZw='
+    
 
     if (code == '001'):    
         while x:
